@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О нас</title>
-</head>
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block title %} О нас {% endblock %}
+
+
+{% block content %}
+
 <body>
     <h1> О нас</h1>
     <p> Текст о нас </p>
 </body>
-</html>
+{% endblock %}

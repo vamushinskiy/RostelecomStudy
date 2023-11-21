@@ -24,19 +24,19 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="news" {% if request.path == '/' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="{% url 'news' %}" {% if request.path == 'news/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv {% if request.path  == '/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Новости</div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="about">
+                  <a href="{% url 'about' %}" {% if request.path == 'about/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-sharp fa-regular fa-comment {% if request.path  == '/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> О нас </div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="contacts">
+                  <a href="{% url 'contacts' %}" {% if request.path == 'contacts/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-regular fa-envelope"></i>
                         <div class="d-none d-lg-block"> Контакты </div>
                   </a>

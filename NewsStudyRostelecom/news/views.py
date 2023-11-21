@@ -7,7 +7,7 @@ def index(request):
     context = {'article':article}
     return render(request,'news/index.html', context)
 
-def news(request):
+def show(request):
     return render(request,'news/news.html')
 
 def detail(request, id):

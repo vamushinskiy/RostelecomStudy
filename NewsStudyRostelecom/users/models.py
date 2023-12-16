@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 
 
 class Account(models.Model):
-    gender_choices = (('M', 'Male'),
-                      ('F', 'Female'),
-                      ('N/A', 'Not answered'))
+    post_choices = (('НМтС', 'Начальник метеослужбы'),
+                    ('НС', 'Начальник смены'),
+                    ('ИС', 'Инженер-синоптик'),
+                    ('МН', 'Метеонаблюдатель'),
+                    ('N/A', 'Not answered'))
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True)
     nickname = models.CharField(max_length=100)
     birthdate = models.DateField(null=True)
-    gender = models.CharField(choices=gender_choices, max_length=20)
+    post = models.CharField(choices=post_choices, max_length=20)
+    point = models.CharField(max_length=25, default='0')
     account_image = models.ImageField(default='default.jpg',
                                       upload_to='account_images')
 

@@ -20,7 +20,7 @@ class Article(models.Model):
         return f' {self.title} от: {str(self.date)[:16]}'
 
     def get_absolute_url(self):
-        return f'/news/news/{self.id}'
+        return f'/news/show/{self.id}'
 
     # метаданные модели
     class Meta:

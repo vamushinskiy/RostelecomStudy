@@ -18,32 +18,32 @@
     <hr>
         <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                  <a href=" / " {% if request.path == '/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-home menu-icon {% if request.path  == '/' %} link-active {% endif %}" ></i>
+                  <a href="{% url 'home' %}" {% if request.path == 'home' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-home menu-icon {% if request.resolver_match.view_name  == 'home' %} link-active {% endif %}" ></i>
                         <div class="d-none d-lg-block"> Главная</div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'news' %}" {% if request.path == 'news/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv {% if request.path  == '/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Новости</div>
+                  <a href="{% url 'news_index' %}" {% if request.path == '/news/show' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Все новости</div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'about' %}" {% if request.path == 'about/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-sharp fa-regular fa-comment {% if request.path  == '/' %} link-active {% endif %}"></i>
+                  <a href="{% url 'about' %}" {% if request.path == '/about/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> О нас </div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'contacts' %}" {% if request.path == 'contacts/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-regular fa-envelope"></i>
+                  <a href="{% url 'contacts' %}" {% if request.path == '/contacts/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-regular fa-envelope menu-icon {% if request.resolver_match.view_name  == '/contacts/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Контакты </div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="admin">
-                        <i class="fa fa-pen-nib menu-icon"></i>
+                  <a href="/admin/" >
+                        <i class="fa fa-pen-nib menu-icon {% if request.resolver_match.view_name  == '/admin/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Администратор </div>
                   </a>
               </li>

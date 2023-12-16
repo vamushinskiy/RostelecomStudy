@@ -9,7 +9,7 @@ def index(request):
     return render(request, 'main/index.html')
 
 def news(request):
-    return render(request,'main/news.html')
+    return render(request,'news/index.html')
 
 def get_demo(request, a, operation, b):
     #match operation:

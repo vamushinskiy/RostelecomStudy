@@ -1,9 +1,9 @@
 body{
-    #background-color:#FFFFFF;
+    #background-color:#1abaff;
 }
 aside{  /* стиль боковой панели навигации */
     float: left; /* позиция - слева */
-    background: #FFFFFF;/* цвет фона*/
+    background: #0f7cab;/* цвет фона*/
     width: 25%; /*ширина в % от экрана, можно указать в px */
     padding: 1%; /*отступы */
     height: 100vh; /* высота боковой панели - 100% от видимой высоты экрана*/
@@ -11,7 +11,7 @@ aside{  /* стиль боковой панели навигации */
 }
 a{
     text-decoration:none;
-    color:white;
+    color:black;
 }
 /*a:link - просто ссылка
 a:visited - посещенная
@@ -40,7 +40,7 @@ aside{
     width: 75%;
 }
 aside a{
-    color: #36f;
+    color: #FFFFFF;
     outline: none;
     text-decoration: none;
     padding: 5px 1px;
@@ -70,7 +70,7 @@ body .single_news{
 }
 
 .link-active {
-  color: #0D6EFD;
+  color: #0db5fc;
 }
 
 .d-lg-block{

@@ -2,6 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Tag(models.Model):
+    title = models.CharField(max_length=50)
+    status = models.BooleanField(default=True)
+    def __str__(self):
+        return self.title
+    class Meta:
+        ordering = ['title', 'status']
+        verbose_name = 'Явление'
+        verbose_name_plural ='Явления'
+
 class Article(models.Model):
     categories = (('ФП', 'Фактическая погода'),
                   ('ПП', 'Прогноз погоды'),
@@ -15,6 +25,7 @@ class Article(models.Model):
     anouncement = models.TextField('Анонс', max_length=250)
     text = models.TextField('Текст сообщения')
     date = models.DateTimeField('Дата наблюдения', auto_created=True)
+    tags = models.ManyToManyField(to=Tag, blank=True)
 
     # методы моделей
     def __str__(self):

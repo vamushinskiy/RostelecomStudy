@@ -8,15 +8,16 @@
             <div class="text-center" style="margin-top:30px;">
                     <h1 >Вся погода</h1>
             </div>
-
-             <div class="single_news">
-                <div class="p-4 p-md-5 text-white rounded bg-info" >
-                        <div class="col-md-6 px-0">
-                          <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
-                          <p class="lead my-3">{{ article.anouncement }}</p>
-                          <p class="lead mb-0"><a href="{{ article.get_absolute_url }}" class="text-white fw-bold">Полный текст...</a></p>
-                        </div>
-                  </div>
-            </div>
+            {% for article in articles %}
+                 <div class="single_news">
+                    <div class="p-4 p-md-5 text-white rounded bg-info" >
+                            <div class="col-md-6 px-0">
+                              <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
+                              <p class="lead my-3">{{ article.date }} {{ article.anouncement }}</p>
+                              <p class="lead mb-0"><a href="{{ article.get_absolute_url }}" class="text-white fw-bold">Полный текст...</a></p>
+                            </div>
+                      </div>
+                </div>
+            {% endfor %}
         </div>
 {% endblock %}

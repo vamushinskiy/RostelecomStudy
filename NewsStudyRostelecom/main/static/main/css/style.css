@@ -3,7 +3,7 @@ body{
 }
 aside{  /* стиль боковой панели навигации */
     float: left; /* позиция - слева */
-    background: #0f7cab;/* цвет фона*/
+    background: #0033CB;/* цвет фона*/
     width: 25%; /*ширина в % от экрана, можно указать в px */
     padding: 1%; /*отступы */
     height: 100vh; /* высота боковой панели - 100% от видимой высоты экрана*/
@@ -22,7 +22,7 @@ a:active - нажатая
 aside img{
     padding: 0px 10px;
     width: auto;
-    height: 30px;
+    height: 50px;
     float: left;
     border-radius:5%;
 }
@@ -36,11 +36,11 @@ span.logo{
 }
 aside{
     padding: 35px 25px;
-    background: #e3f2fd;
+    background: #B1DBFA; /*#e3f2fd;*/
     width: 75%;
 }
 aside a{
-    color: #FFFFFF;
+    color: #FF004C; /*#FFFFFF;*/
     outline: none;
     text-decoration: none;
     padding: 5px 1px;

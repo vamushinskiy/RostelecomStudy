@@ -3,17 +3,18 @@ from django.contrib.auth.models import User
 
 
 class Article(models.Model):
-    categories = (('E', 'Economics'),
-                  ('S', 'Sciennce'),
-                  ('IT', 'IT'))
+    categories = (('ФП', 'Фактическая погода'),
+                  ('ПП', 'Прогноз погоды'),
+                  ('ШО', 'Штормовое оповещение'),
+                  ('ШП', 'Штормовое предупреждение'))
 
     # поля                                   # models.CASCADE или SET_DEFAULT
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
-    title = models.CharField('Название', max_length=50, default='')
-    anouncement = models.TextField('Аннотация', max_length=250)
-    text = models.TextField('Текст новости')
-    date = models.DateTimeField('Дата публикации', auto_created=True)
-    category = models.CharField(choices=categories, max_length=20, verbose_name='Категории')
+    title = models.CharField('Пункт', max_length=50, default='')
+    category = models.CharField(choices=categories, max_length=20, verbose_name='Категория сообщения')
+    anouncement = models.TextField('Анонс', max_length=250)
+    text = models.TextField('Текст сообщения')
+    date = models.DateTimeField('Дата наблюдения', auto_created=True)
 
     # методы моделей
     def __str__(self):
@@ -25,5 +26,5 @@ class Article(models.Model):
     # метаданные модели
     class Meta:
         ordering = ['title', 'date']
-        verbose_name = 'Новость'
-        verbose_name_plural ='Новости'
+        verbose_name = 'Сообщение'
+        verbose_name_plural ='Сообщения'

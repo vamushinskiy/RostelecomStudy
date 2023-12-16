@@ -25,7 +25,7 @@ class Article(models.Model):
     anouncement = models.TextField('Анонс', max_length=250)
     text = models.TextField('Текст сообщения')
     date = models.DateTimeField('Дата наблюдения', auto_created=True)
-    tags = models.ManyToManyField(to=Tag, blank=True)
+    tags = models.ManyToManyField(to=Tag, blank=True, verbose_name='Явления')
 
     # методы моделей
     def __str__(self):
@@ -34,6 +34,12 @@ class Article(models.Model):
     def get_absolute_url(self):
         return f'/news/show/{self.id}'
 
+# создаём список тэгов
+    def tag_list(self):
+        s = ''
+        for t in self.tags:
+            s += t.title + ' '
+        return s
     # метаданные модели
     class Meta:
         ordering = ['title', 'date']

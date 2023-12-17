@@ -2,11 +2,14 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .models import News, Product
 from django.http import HttpResponse
+from news.models import Article
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'main/index.html')
+    article = Article.objects.all().order_by('-date').first()
+    context = {'article': article}
+    return render(request, 'main/index.html', context)
 
 def news(request):
     return render(request,'news/index.html')

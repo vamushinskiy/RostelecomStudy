@@ -3,6 +3,7 @@ from .models import *
 
 # для просмотра всех сообщений
 def index(request):
+    # применена обратная сортировка по дате.
     articles = Article.objects.all().order_by('-date')
     context = {'articles':articles}
     return render(request,'news/index.html', context)

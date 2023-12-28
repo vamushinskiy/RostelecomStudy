@@ -30,6 +30,13 @@
                   </a>
               </li>
               <li class="nav-item">
+                  <a href="{% url 'new_article' %}" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/new_article/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Создание сообщения</div>
+                  </a>
+              </li>
+
+              <li class="nav-item">
                   <a href="{% url 'about' %}" {% if request.path == '/about/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> О нас </div>

@@ -1,5 +1,6 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from .models import *
+from .forms import *
 from django.db import connection, reset_queries
 
 # для просмотра всех сообщений
@@ -33,3 +34,26 @@ def detail(request, id):
     context = {'article': article}
     return render(request, 'news/news_detail.html', context)
 
+# Функция создания нового сооющения.
+def new_article(request):
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            # Проверяем пользователя
+            current_user = request.user
+
+            # Если не аноним
+            if current_user.id != None:
+                # Создаём экземпляр сообщения не сохраняя в БД.
+                create_article = form.save(commit=False)
+                # то добавляем его к новости
+                create_article.author = current_user
+                # И сохраняем новость.
+                create_article.save()
+                form.save_m2m()
+                # Очищаем форму.
+                form = ArticleForm()
+                return redirect('news_index')
+    else:
+        form = ArticleForm()
+    return render(request, 'news/new_article.html', {'form':form})

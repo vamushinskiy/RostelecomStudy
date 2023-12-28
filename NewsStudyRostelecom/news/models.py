@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Tag(models.Model):
     title = models.CharField(max_length=50)
     status = models.BooleanField(default=True)

@@ -25,6 +25,20 @@
                     </span>
                 </div>
             </form>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <select class="form-select" name="category_filter" style="width:40%">
+                        <option value="0">Все категории</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.0 }}" {% if selected_category == catgory.id %} selected_category {% endif %}> {{ cat.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-success" value="Выбрать" style="margin: 0 15px">
+                    </span>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -36,7 +50,7 @@
                 <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
                 <p class="lead my-3">{{ article.date }} {{ article.anouncement }}</p>
                 <p class="lead my-3">передал: {{ article.author }} </p>
-                <p class="lead mb-0"><a href="{{ article.get_absolute_url }}" class="text-black fw-bold">Полное
+                <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-black fw-bold">Полное
                     сообщение...</a></p>
             </div>
         </div>

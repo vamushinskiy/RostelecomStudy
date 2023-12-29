@@ -27,6 +27,7 @@ class Article(models.Model):
     text = models.TextField('Текст сообщения')
     date = models.DateTimeField('Дата наблюдения', auto_created=True)
     tags = models.ManyToManyField(to=Tag, blank=True, verbose_name='Явления')
+    slug = models.SlugField()
 
     # методы моделей
     def __str__(self):

@@ -13,11 +13,13 @@
                  <div class="single_news">
                     <div class="p-4 p-md-5 text-black rounded bg-info" >
                             <div class="col-md-6 px-0">
-<!--                              <h1 class="display-4 fst-italic"> {{ article.title }}</h1>-->
+
                               <p class="lead my-3">{{ article.anouncement }}</p>
                               <p class="lead mb-0" class="fw-bold" >{{ article.text }}</p>
                               <p class="lead my-3">передал: {{ article.author }} </p>
                             </div>
+                            <a class="btn btn-warning" href="{% url 'delete_article' article.pk %}"> Удалить </a>
+                            <a class="btn btn-primary" href="{% url 'news_update' article.pk %}"> Редактировать </a>
                       </div>
                 </div>
 

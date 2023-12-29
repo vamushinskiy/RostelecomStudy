@@ -22,3 +22,6 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug/__', include(debug_toolbar.urls)),
         ] + urlpatterns
+
+admin.site.site_header = "Новости погоды"
+admin.site.index_title = "Панель администрирования сайта Новости погоды"

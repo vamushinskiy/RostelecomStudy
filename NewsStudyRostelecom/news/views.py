@@ -2,16 +2,20 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
-from django.db import connection, reset_queries
+from django.views.generic import DetailView, DeleteView, UpdateView
+from django.urls import reverse_lazy
 
 # для просмотра всех сообщений
 def index(request):
 
     # получаем список авторов
     author_list = User.objects.all()
+    # Получаем список категорий.
+    categories = Article.categories
     # получаем список тэгов
     tag_list = Tag.objects.all().values('title')
     selected_author = 0
+    selected_category = 0
     selected_tag = 0
     if request.method == "POST":
         selected_author = int(request.POST.get('author_filter'))
@@ -26,14 +30,14 @@ def index(request):
         # применена обратная сортировка по дате.
         articles = Article.objects.all().order_by('-date')
 
-    context = {'articles': articles, 'author_list': author_list, 'selected_author': selected_author}
+    context = {'articles': articles, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories}
     return render(request,'news/index.html', context)
 
 # для отображения полного сообщения
-def detail(request, id):
-    article = Article.objects.filter(id=id).first()
-    context = {'article': article}
-    return render(request, 'news/news_detail.html', context)
+# def detail(request, id):
+#     article = Article.objects.filter(id=id).first()
+#     context = {'article': article}
+#     return render(request, 'news/news_detail.html', context)
 
 # Используем декоратор проверки аутентификации.
 @login_required(login_url="/")
@@ -60,3 +64,22 @@ def new_article(request):
     else:
         form = ArticleForm()
     return render(request, 'news/new_article.html', {'form':form})
+
+
+# Используем дженерик для отображения полного сообщения
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'news/news_detail.html'
+    context_object_name = 'article'
+
+# Используем дженерик для редактирования сообщения
+class ArticleUpdateView(UpdateView):
+    model = Article
+    template_name = 'news/new_article.html'
+    fields = ['title', 'anouncement', 'text', 'date', 'tags']
+
+    # Используем дженерик для редактирования сообщения
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('news_index')
+    template_name = 'news/delete_article.html'

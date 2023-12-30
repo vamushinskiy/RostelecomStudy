@@ -25,7 +25,7 @@ def index(request):
 
         else:
             # применена фильтрация по автору.
-            articles = Article.objects.filter(author=selected_author)
+            articles = Article.objects.filter(author=selected_author).order_by('-date')
     else:
         # применена обратная сортировка по дате.
         articles = Article.objects.all().order_by('-date')

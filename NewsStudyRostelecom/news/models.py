@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
+from django.db.models import Count
 
 
 
@@ -8,6 +10,10 @@ class Tag(models.Model):
     status = models.BooleanField(default=True)
     def __str__(self):
         return self.title
+
+    # def tag_count(self, object):
+    #     count = self.objects.annotate(tag_count=Count('article')
+
     class Meta:
         ordering = ['title', 'status']
         verbose_name = 'Явление'
@@ -17,7 +23,8 @@ class Article(models.Model):
     categories = (('ФП', 'Фактическая погода'),
                   ('ПП', 'Прогноз погоды'),
                   ('ШО', 'Штормовое оповещение'),
-                  ('ШП', 'Штормовое предупреждение'))
+                  ('ШП', 'Штормовое предупреждение'),
+                  ('КП', 'Карты погоды'))
 
     # поля                                   # models.CASCADE или SET_DEFAULT
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
@@ -36,14 +43,36 @@ class Article(models.Model):
     def get_absolute_url(self):
         return f'/news/show/{self.id}'
 
+    def image_tag(self):
+        image = Image.objects.filter(article=self)
+        if image:
+            return mark_safe(f'<img src="{image[0].image.url}" height="50px" width="auto"/>')
+        else:
+            return '(no image)'
+
 # создаём список тэгов
-    def tag_list(self):
-        s = ''
-        for t in self.tags:
-            s += t.title + ' '
-        return s
+#     def tag_list(self):
+#         s = ''
+#         for t in self.tags:
+#             s += t.title + ' '
+#         return s
     # метаданные модели
     class Meta:
         ordering = ['title', 'date']
         verbose_name = 'Сообщение'
         verbose_name_plural ='Сообщения'
+
+# Для отображения картинок в сообщениях.
+class Image(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, blank=True)
+    image = models.ImageField(upload_to='article_images/')
+
+    def __str__(self):
+        return self.title
+
+    def image_tag(self):
+        if self.image is not None:
+            return mark_safe('<img src="{self.image.url}" height="50px" width="auto"/>')
+        else:
+            return '(no image)'

@@ -19,6 +19,7 @@ def index(request):
     selected_tag = 0
     if request.method == "POST":
         selected_author = int(request.POST.get('author_filter'))
+        selected_category = int(request.POST.get('category_filter'))
         if selected_author == 0:
             # применена обратная сортировка по дате.
             articles = Article.objects.all().order_by('-date')
@@ -26,11 +27,14 @@ def index(request):
         else:
             # применена фильтрация по автору.
             articles = Article.objects.filter(author=selected_author).order_by('-date')
+        if selected_category != 0:
+            articles = articles.filter(category__icontains=categories[selected_category-1][0]).order_by('-date')
     else:
         # применена обратная сортировка по дате.
         articles = Article.objects.all().order_by('-date')
 
-    context = {'articles': articles, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories}
+    context = {'articles': articles, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories,
+               'selected_category': selected_category,}
     return render(request,'news/index.html', context)
 
 # для отображения полного сообщения
@@ -44,7 +48,7 @@ def index(request):
 # Функция создания нового сооющения.
 def new_article(request):
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             # Проверяем пользователя
             current_user = request.user
@@ -57,9 +61,12 @@ def new_article(request):
                 create_article.author = current_user
                 # И сохраняем новость.
                 create_article.save()
+                # Сохраняем тэги
                 form.save_m2m()
+                for img in request.FILES.getlist('image_field'):
+                    Image.objects.create(article=create_article, image=img, title=img.name)
                 # Очищаем форму.
-                form = ArticleForm()
+                #form = ArticleForm()
                 return redirect('news_index')
     else:
         form = ArticleForm()
@@ -71,6 +78,14 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = 'news/news_detail.html'
     context_object_name = 'article'
+
+    # Для отображения картинок в новости добавляем метод:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_object = self.object
+        images = Image.objects.filter(article=current_object)
+        context['images'] = images
+        return context
 
 # Используем дженерик для редактирования сообщения
 class ArticleUpdateView(UpdateView):

@@ -9,7 +9,7 @@
         <h1>Вся погода</h1>
     </div>
     <div class="content_center">
-        <h6> Фильтр по автору: </h6>
+        <h6> Фильтры: </h6>
         <div class="form-group col-8">
             <form method="post">
                 {% csrf_token %}
@@ -17,21 +17,13 @@
                     <select class="form-select" name="author_filter" style="width:40%">
                         <option value="0">Все авторы</option>
                         {% for author in author_list %}
-                            <option value="{{ author.id }}" {% if selected_author == author.id %} selected_author {% endif %}> {{ author.username }}</option>
+                            <option value="{{ author.id }}" {% if selected_author == author.id %} selected {% endif %}> {{ author.username }}</option>
                         {% endfor %}
                     </select>
-                    <span class="input-group-btn">
-                        <input type="submit" class="btn btn-success" value="Выбрать" style="margin: 0 15px">
-                    </span>
-                </div>
-            </form>
-            <form method="post">
-                {% csrf_token %}
-                <div class="input-group">
                     <select class="form-select" name="category_filter" style="width:40%">
                         <option value="0">Все категории</option>
                         {% for cat in categories %}
-                            <option value="{{ cat.0 }}" {% if selected_category == catgory.id %} selected_category {% endif %}> {{ cat.1 }}</option>
+                            <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}> {{ cat.1 }}</option>
                         {% endfor %}
                     </select>
                     <span class="input-group-btn">
@@ -39,6 +31,7 @@
                     </span>
                 </div>
             </form>
+
         </div>
     </div>
 

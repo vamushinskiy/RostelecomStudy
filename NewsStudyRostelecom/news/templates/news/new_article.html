@@ -11,7 +11,7 @@
     <div class="text-center" style="margin-top:30px;">
         <h1>Новое сообщение</h1>
     </div>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="Передать">

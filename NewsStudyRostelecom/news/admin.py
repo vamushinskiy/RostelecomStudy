@@ -26,11 +26,13 @@ class ArticleAdmin(admin.ModelAdmin):
     # Для автоматического формирования слаг
     prepopulated_fields = {"slug" : ('title',)}
     # Пагинация
-    list_per_page = 5
+    list_per_page = 4
     # Добавление картинок в сообщение
     inlines = [ArticleImageInline,]
     # Добавление поиска
     search_fields = ['title__icontains','tags__title']
+    # фильтр для тэгов
+    filter_vertical = ['tags']
 
 
     @admin.display(description='Длина сообщения')
@@ -40,7 +42,7 @@ class ArticleAdmin(admin.ModelAdmin):
 # Регистрация в панели администрирования через декоратор.
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['title', 'status', 'tag_count']
+    list_display = ['title', 'tag_count', 'status']
     list_filter = ['title', 'status']
 # При регистрация в панели администрирования через декоратор следущая строчка не нужна..
 #admin.site.register(Tag, TagAdmin)

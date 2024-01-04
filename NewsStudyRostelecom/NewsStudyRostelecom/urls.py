@@ -10,7 +10,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('news/', include('news.urls')),
     path('users/', include('users.urls')),
-    path('home/', include('home.urls')),
+    # path('home/', include('home.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # добавляем строку для работы медиафайлов

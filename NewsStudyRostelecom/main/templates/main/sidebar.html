@@ -59,15 +59,38 @@
        </ul>
     </hr>
     <br>
-    <div class="dropdown1 flex-column mb-auto">
-        <button class="btn btn-primary dropdown-toggle col-12" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false" style="background:#212529;">
-            <img src="{{ request.user.account.account_image.url }}" alt="" width="25" height="25"
-                 class="rounded-circle me-2">
-            <div class="d-none d-lg-block "> {{ request.user.username }}</div>
-        </button>
-    </div>
-
+    {% if request.user.id %}
+        <div class="dropdown flex-column mb-auto">
+            <button class="btn btn-primary dropdown-toggle col-12" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false" style="background:#97CFF8;">
+                <img src="{{ request.user.account.account_image.url }}" alt="" width="25" height="25"
+                     class="rounded-circle me-2">
+                <div class="d-none d-lg-block "> {{ request.user.username }}</div>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Создать сообщение</a></li>
+                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                <li><a class="dropdown-divider"> </a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
+            </ul>
+        </div>
+    {% else %}
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a href="{% url 'login' %}"  {% if request.resolver_match.view_name == 'login' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-sign menu-icon" ></i>
+                    <div class="d-none d-lg-block"> Вход</div>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'registration' %}" {% if request.resolver_match.view_name == 'registration' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa-regular fa-user menu-icon" ></i>
+                    <div class="d-none d-lg-block"> Регистрация</div>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+    <br>
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">

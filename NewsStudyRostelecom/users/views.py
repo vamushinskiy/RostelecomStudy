@@ -27,9 +27,9 @@ def registration(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password1')
             authenticate(username=username, password=password)
-            messages.success(request, f'{username} был зарегистрирован!')
+            messages.success(request, f'Пользователь {username} зарегистрирован!')
             return redirect('home')
     else:
         form = UserCreationForm()

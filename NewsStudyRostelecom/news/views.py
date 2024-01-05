@@ -4,6 +4,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from django.conf import settings
 
 # для просмотра всех сообщений
 def index(request):
@@ -44,7 +45,7 @@ def index(request):
 #     return render(request, 'news/news_detail.html', context)
 
 # Используем декоратор проверки аутентификации.
-@login_required(login_url="/")
+@login_required(login_url=settings.LOGIN_URL)
 # Функция создания нового сооющения.
 def new_article(request):
     if request.method == 'POST':

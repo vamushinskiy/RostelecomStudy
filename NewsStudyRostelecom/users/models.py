@@ -16,6 +16,9 @@ class Account(models.Model):
     point = models.CharField(max_length=25, default='0')
     account_image = models.ImageField(default='default.jpg',
                                       upload_to='account_images')
+    address = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    telegram = models.CharField(max_length=100)
 
     # pip install pillow в терминале для работы с изображениями.
 

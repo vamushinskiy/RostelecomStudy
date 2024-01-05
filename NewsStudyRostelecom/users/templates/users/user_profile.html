@@ -13,7 +13,7 @@
 <aside>
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
         <img  src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
-        <span class="fs-5 d-none d-lg-block responsive-title"> Новости погоды</span>
+        <span class="fs-5 d-none d-lg-block responsive-title"> Профиль</span>
     </a>
     <hr>
         <ul class="nav nav-pills flex-column mb-auto">
@@ -24,37 +24,24 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'news_index' %}" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="#" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Все новости</div>
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'new_article' %}" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="#" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/new_article/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Создание сообщения</div>
                   </a>
               </li>
 
               <li class="nav-item">
-                  <a href="{% url 'about' %}" {% if request.path == '/about/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> О нас </div>
+                  <a href="{% url 'logout' %}" {% if request.path == 'logout/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/logout/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Выход </div>
                   </a>
               </li>
-              <li class="nav-item">
-                  <a href="{% url 'contacts' %}" {% if request.path == '/contacts/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-regular fa-envelope menu-icon {% if request.resolver_match.view_name  == '/contacts/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Контакты </div>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a href="/admin/" >
-                        <i class="fa fa-pen-nib menu-icon {% if request.resolver_match.view_name  == '/admin/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Администратор </div>
-                  </a>
-              </li>
-
 
        </ul>
     </hr>
@@ -69,7 +56,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" href="#">Создать сообщение</a></li>
-                <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}}">Профиль</a></li>
                 <li><a class="dropdown-divider"> </a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
             </ul>

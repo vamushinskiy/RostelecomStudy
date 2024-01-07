@@ -3,22 +3,23 @@ from django.contrib.auth.models import User
 
 
 class Account(models.Model):
-    post_choices = (('НМтС', 'Начальник метеослужбы'),
+    post_choices = (('N/A', 'Not answered'),
+                    ('НМтС', 'Начальник метеослужбы'),
                     ('НС', 'Начальник смены'),
                     ('ИС', 'Инженер-синоптик'),
-                    ('МН', 'Метеонаблюдатель'),
-                    ('N/A', 'Not answered'))
+                    ('МН', 'Метеонаблюдатель'))
+
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True)
     nickname = models.CharField(max_length=100)
     birthdate = models.DateField(null=True)
-    post = models.CharField(choices=post_choices, max_length=20)
-    point = models.CharField(max_length=25, default='0')
+    post = models.CharField(choices=post_choices, max_length=20, null=True)
+    point = models.CharField(max_length=25, null=True)
     account_image = models.ImageField(default='default.jpg',
                                       upload_to='account_images')
-    address = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    telegram = models.CharField(max_length=100)
+    address = models.CharField(max_length=100, null=True)
+    phone = models.CharField(max_length=100, null=True)
+    telegram = models.CharField(max_length=100, null=True)
 
     # pip install pillow в терминале для работы с изображениями.
 

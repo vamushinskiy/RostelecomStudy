@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from django.conf import settings
+import json
+from users.utils import check_group
+from .utils import ViewCountMixin
 
 # для просмотра всех сообщений
 def index(request):
@@ -46,6 +49,8 @@ def index(request):
 
 # Используем декоратор проверки аутентификации.
 @login_required(login_url=settings.LOGIN_URL)
+# Применяем декоратор
+@check_group('Authors')
 # Функция создания нового сооющения.
 def new_article(request):
     if request.method == 'POST':
@@ -75,7 +80,7 @@ def new_article(request):
 
 
 # Используем дженерик для отображения полного сообщения
-class ArticleDetailView(DetailView):
+class ArticleDetailView(ViewCountMixin,DetailView):
     model = Article
     template_name = 'news/news_detail.html'
     context_object_name = 'article'
@@ -94,8 +99,25 @@ class ArticleUpdateView(UpdateView):
     template_name = 'news/new_article.html'
     fields = ['title', 'anouncement', 'text', 'date', 'tags']
 
-    # Используем дженерик для редактирования сообщения
+   # Используем дженерик для редактирования сообщения
 class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('news_index')
     template_name = 'news/delete_article.html'
+
+
+# функция поиска
+def search(request):
+    # Если так не сработает, то делаем как ниже
+    #if request.is_ajax():
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        q = request.GET.get('term', '')
+        articles = Article.objects.filter(title__icontains=q)
+        results = []
+        for a in articles:
+            results.append(a.title)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetypes = 'aplication/json'
+    return HttpResponse(data, mimetypes)

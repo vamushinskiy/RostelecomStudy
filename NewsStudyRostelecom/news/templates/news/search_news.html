@@ -1,12 +1,49 @@
 {% extends 'main/base_template.html' %}
 {% load static %}
 {% load bootstrap5 %}
-{% block title %} Вся погода {% endblock %}
+{% block title %} Поиск {% endblock %}
 
 {% block content %}
+<!-- jQuery !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<script>
+
+  $(function() {
+    $("#search_input").autocomplete({
+      source: "search_auto/",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+
+</script>
+
+
+<div class="content_center">
+    <div class="row">
+        <div class="search">
+            <label for="search_input">Поиск: </label>
+            <input id="search_input">
+            <button class="btn btn-primary">Нвайти</button>
+        </div>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="text-center" style="margin-top:30px;">
-        <h1>Вся погода</h1>
+        <h1>Поиск</h1>
     </div>
     <div class="content_center">
         <h6> Фильтры: </h6>
@@ -45,7 +82,6 @@
                 <p class="lead my-3">передал: {{ article.author }} </p>
                 <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-black fw-bold">Полное
                     сообщение...</a></p>
-                <p><small>Просмотры: {{ article.get_views }}</small></p>
             </div>
         </div>
     </div>

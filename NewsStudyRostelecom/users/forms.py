@@ -12,22 +12,6 @@ class ContactForm(forms.Form):
     email = forms.EmailField(validators=[acceptable_email])
     message = forms.CharField(widget=forms.Textarea)
 
-
-# Форма редактирования аккаунта
-class AccountEditForm(forms.ModelForm):
-    class Meta:
-        model = Account
-        fields = ['phone', 'address', 'telegram', 'account_image']
-        widgets = {'phone': TextInput({'class': 'textinput form-control',
-                                       'placeholder': 'phone number'}),
-                   'address': TextInput({'class': 'textinput form-control',
-                                         'placeholder': 'address'}),
-                   'telegram': TextInput({'class': 'textinput form-control',
-                                          'placeholder': 'telegram'}),
-                   'account_image': FileInput({'class': 'form-control',
-                                               'placeholder': 'image'})
-                   }
-
 class UserUpdateForm(UserChangeForm):
     class Meta:
         model = User
@@ -41,3 +25,19 @@ class UserUpdateForm(UserChangeForm):
                    'last_name': TextInput({'class': 'textinput form-control',
                                            'placeholder': 'Last name'}),
                    }
+
+# Форма редактирования аккаунта
+class AccountUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ['post', 'phone', 'address', 'telegram', 'account_image']
+        widgets = {'phone': TextInput({'class': 'textinput form-control',
+                                       'placeholder': 'phone number'}),
+                   'address': TextInput({'class': 'textinput form-control',
+                                         'placeholder': 'address'}),
+                   'telegram': TextInput({'class': 'textinput form-control',
+                                          'placeholder': 'telegram'}),
+                   'account_image': FileInput({'class': 'form-control',
+                                               'placeholder': 'image'})
+                   }
+

@@ -10,14 +10,26 @@
 <div class="row">
     <div class="text-center" style="margin-top:30px;">
         <h1>Регистрация пользователя</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-check">
+                <h5>Тип аккаунта:</h5>
+                <div>
+                    <input class="form-check-input" type="radio" id="author" name="account_type" value="author"/>
+                    <label class="form-check-label" for="author">Автор</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" id="reader" name="account_type" value="reader" checked/>
+                    <label class="form-check-label" for="reader" >Читатель</label>
+                 </div>
+            </div>
+            <br>
+            <input type="submit" value="Зарегистрировать">
+        </form>
+
     </div>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Зарегистрировать">
-    </form>
-
-
 
 </div>
 

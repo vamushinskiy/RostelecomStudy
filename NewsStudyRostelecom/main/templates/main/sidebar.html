@@ -42,8 +42,8 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'news_index' %}" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
+                  <a href="{% url 'pagination' %}" {% if request.path == '/news/pagination' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/pagination/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Все новости</div>
                   </a>
               </li>

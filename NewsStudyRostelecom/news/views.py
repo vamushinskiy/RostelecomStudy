@@ -8,6 +8,7 @@ from django.conf import settings
 import json
 from users.utils import check_group
 from .utils import ViewCountMixin
+from django.core.paginator import Paginator
 
 # для просмотра всех сообщений
 def index(request):
@@ -121,3 +122,13 @@ def search(request):
         data = 'fail'
     mimetypes = 'aplication/json'
     return HttpResponse(data, mimetypes)
+
+# Функция пагинации(разбиения на страницы)
+
+def pagination(request):
+    articles = Article.objects.all()
+    p = Paginator(articles, 5)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj}
+    return render(request, 'news/index.html', context)

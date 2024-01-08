@@ -1,12 +1,16 @@
 {% extends 'main/base_template.html' %}
 {% load static %}
 {% load bootstrap5 %}
-{% block title %} Вся погода {% endblock %}
+{% block title %} Избранное {% endblock %}
+
+{% block sidebar %} {% include 'users/user_profile.html' %} {% endblock %}
 
 {% block content %}
+
+{% if articles|length  != 0 %}
 <div class="row">
     <div class="text-center" style="margin-top:30px;">
-        <h1>Вся погода</h1>
+        <h1>Избранное</h1>
     </div>
     <div class="content_center">
         <h6> Фильтры: </h6>
@@ -57,7 +61,6 @@
         {% endif %}
     </div>
 
-
     {% for article in articles %}
     <div class="single_news">
         <div class="p-4 p-md-5 text-black rounded bg-info">
@@ -74,4 +77,13 @@
     </div>
     {% endfor %}
 </div>
+{% else %}
+<div class="content_center">
+    <div class="row">
+        <h1> У Вас пока нет сообщений. </h1>
+        <a class="ml-2" href="{% url 'new_article' %}"><h1>Хотите cоздать сообщение?</h1></a>
+    </div>
+</div>
+
+{% endif %}
 {% endblock %}

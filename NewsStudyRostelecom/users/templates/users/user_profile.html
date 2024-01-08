@@ -30,6 +30,13 @@
                   </a>
               </li>
               <li class="nav-item">
+                  <a href="{% url 'my_news' %}" {% if request.path == '/my_news' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/my_news/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Мои сообщения</div>
+                  </a>
+              </li>
+
+              <li class="nav-item">
                   <a href="#" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/new_article/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Создание сообщения</div>

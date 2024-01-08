@@ -37,16 +37,16 @@ def index(request):
     else:
         # применена обратная сортировка по дате.
         articles = Article.objects.all().order_by('-date')
+    total = len(articles)
+    p = Paginator(articles, 5)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
 
-    context = {'articles': articles, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories,
-               'selected_category': selected_category,}
+    context = {'articles': page_obj, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories,
+               'selected_category': selected_category, 'total': total}
     return render(request,'news/index.html', context)
 
-# для отображения полного сообщения
-# def detail(request, id):
-#     article = Article.objects.filter(id=id).first()
-#     context = {'article': article}
-#     return render(request, 'news/news_detail.html', context)
+
 
 # Используем декоратор проверки аутентификации.
 @login_required(login_url=settings.LOGIN_URL)
@@ -100,7 +100,7 @@ class ArticleUpdateView(UpdateView):
     template_name = 'news/new_article.html'
     fields = ['title', 'anouncement', 'text', 'date', 'tags']
 
-   # Используем дженерик для редактирования сообщения
+   # Используем дженерик для удаления сообщения
 class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('news_index')
@@ -123,12 +123,6 @@ def search(request):
     mimetypes = 'aplication/json'
     return HttpResponse(data, mimetypes)
 
-# Функция пагинации(разбиения на страницы)
 
-def pagination(request):
-    articles = Article.objects.all()
-    p = Paginator(articles, 5)
-    page_number = request.GET.get('page')
-    page_obj = p.get_page(page_number)
-    context = {'articles': page_obj}
-    return render(request, 'news/index.html', context)
+
+

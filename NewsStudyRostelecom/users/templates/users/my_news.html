@@ -1,12 +1,16 @@
 {% extends 'main/base_template.html' %}
 {% load static %}
 {% load bootstrap5 %}
-{% block title %} Вся погода {% endblock %}
+{% block title %} Мои сообщения {% endblock %}
+
+{% block sidebar %} {% include 'users/user_profile.html' %} {% endblock %}
 
 {% block content %}
+
+{% if articles|length  != 0 %}
 <div class="row">
     <div class="text-center" style="margin-top:30px;">
-        <h1>Вся погода</h1>
+        <h1>Мои сообщения</h1>
     </div>
     <div class="content_center">
         <h6> Фильтры: </h6>
@@ -14,12 +18,6 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="input-group">
-                    <select class="form-select" name="author_filter" style="width:40%">
-                        <option value="0">Все авторы</option>
-                        {% for author in author_list %}
-                            <option value="{{ author.id }}" {% if selected_author == author.id %} selected {% endif %}> {{ author.username }}</option>
-                        {% endfor %}
-                    </select>
                     <select class="form-select" name="category_filter" style="width:40%">
                         <option value="0">Все категории</option>
                         {% for cat in categories %}
@@ -57,7 +55,6 @@
         {% endif %}
     </div>
 
-
     {% for article in articles %}
     <div class="single_news">
         <div class="p-4 p-md-5 text-black rounded bg-info">
@@ -74,4 +71,13 @@
     </div>
     {% endfor %}
 </div>
+{% else %}
+<div class="content_center">
+    <div class="row">
+        <h1> У Вас пока нет сообщений. </h1>
+        <a class="ml-2" href="{% url 'new_article' %}"><h1>Хотите cоздать сообщение?</h1></a>
+    </div>
+</div>
+
+{% endif %}
 {% endblock %}

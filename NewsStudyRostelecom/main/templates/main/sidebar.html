@@ -9,6 +9,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+
+<!-- jQuery !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
 <!--Скрипт для поиска-->
 <script>
   $(function() {
@@ -42,22 +49,23 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="{% url 'pagination' %}" {% if request.path == '/news/pagination' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/pagination/' %} link-active {% endif %}"></i>
+                  <a href="{% url 'news_index' %}" {% if request.path == '/news/news_index' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Все новости</div>
                   </a>
               </li>
-              <li class="nav-item">
-                  <a href="{% url 'new_article' %}" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/new_article/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Поиск</div>
-                  </a>
-              </li>
+              <div class="row">
+                    <div class="search">
+                        <input id="search_input">
+                        <button class="btn btn-primary">🔍︎</button>
+                    </div>
+              </div>
               {% if request.user|has_group:"Authors" %}
-              <li>
-                <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-pen-nib menu-icon"></i>  <div class="d-none d-lg-block"> Мои сообщения</div>
-                </a>
+              <li class="nav-item">
+                  <a href="{% url 'my_news' %}" {% if request.path == '/my_news' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/my_news/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Мои сообщения</div>
+                  </a>
               </li>
               {% endif %}
               <li class="nav-item">

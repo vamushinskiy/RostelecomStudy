@@ -3,13 +3,14 @@ from .models import *
 from .forms import *
 from .forms import AccountUpdateForm, UserUpdateForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from news.models import Article
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -46,7 +47,8 @@ def registration(request):
             password = form.cleaned_data.get('password1')
             account = Account.objects.create(user=user, nickname=user.username)
 
-            authenticate(username=username, password=password)
+            user = authenticate(username=username, password=password)
+            login(request, user)
             messages.success(request, f'Пользователь {username} зарегистрирован!')
             return redirect('profile')
     else:
@@ -108,3 +110,31 @@ def add_to_favorites(request, id):
         bookmark = FavoriteArticle.objects.create(user=request.user, article=article)
         messages.success(request,f"Новость {article.title} добавлена в закладки")
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+def my_news(request):
+
+    # получаем автора
+    author = User.objects.get(id=request.user.id)
+    # Получаем список категорий.
+    categories = Article.categories
+    articles = Article.objects.filter(author=author).order_by('-date')
+
+    # получаем список тэгов
+    # tag_list = Tag.objects.all().values('title')
+    # selected_tag = 0
+
+    if request.method == "POST":
+        selected_category = int(request.POST.get('category_filter'))
+
+        if selected_category != 0:
+            articles = articles.filter(category__icontains=categories[selected_category-1][0]).order_by('-date')
+    else:
+        selected_category = 0
+    total = len(articles)
+    p = Paginator(articles, 5)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj, 'categories':categories, 'total': total,
+               'selected_category': selected_category,}
+    return render(request,'users/my_news.html', context)

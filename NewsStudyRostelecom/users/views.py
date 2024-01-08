@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect
 from .models import *
 from .forms import *
 from .forms import AccountUpdateForm, UserUpdateForm
@@ -8,7 +8,8 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-
+from django.contrib.auth.decorators import login_required
+from news.models import Article
 
 
 def index(request):
@@ -90,3 +91,20 @@ def password_edit(request):
     context = {"form": form}
     return render(request,'users/password_edit.html',context)
 
+
+# Функция добавления в избранное
+@login_required
+def add_to_favorites(request, id):
+    article = Article.objects.get(id=id)
+    # Проверям есть ли такая закладка с этой новостью
+    bookmark = FavoriteArticle.objects.filter(user=request.user.id,
+                                              article=article)
+    if bookmark.exists():
+        # Если новость есть, удаляем из избранного
+        bookmark.delete()
+        messages.warning(request,f"Новость {article.title} удалена из закладок")
+    else:
+        # Если новости нет,  избранного
+        bookmark = FavoriteArticle.objects.create(user=request.user, article=article)
+        messages.success(request,f"Новость {article.title} добавлена в закладки")
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])

@@ -9,7 +9,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+<!--Скрипт для поиска-->
+<script>
+  $(function() {
+    $("#search_input").autocomplete({
+      source: "{% url 'search' %}",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
 
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+</script>
 
 
 <aside>
@@ -44,6 +60,12 @@
                 </a>
               </li>
               {% endif %}
+              <li class="nav-item">
+                  <a href="#" {% if request.path == '/myfavorites/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> В избранное </div>
+                  </a>
+              </li>
               <li class="nav-item">
                   <a href="{% url 'about' %}" {% if request.path == '/about/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>

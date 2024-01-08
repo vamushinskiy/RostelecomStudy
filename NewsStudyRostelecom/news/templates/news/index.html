@@ -46,6 +46,7 @@
                 <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-black fw-bold">Полное
                     сообщение...</a></p>
                 <p><small>Просмотры: {{ article.get_views }}</small></p>
+                <a class="btn btn-succes" href="{% url 'favorites' article.pk %}"><i class="fa fa-bookmark menu icon">В избранное</i></a>
             </div>
         </div>
     </div>

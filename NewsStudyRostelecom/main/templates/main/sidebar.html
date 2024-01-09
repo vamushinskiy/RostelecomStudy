@@ -13,7 +13,7 @@
 <!-- jQuery !-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
 <!-- jQuery UI !-->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="{% static 'main/css/search.css' %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <!--Скрипт для поиска-->
@@ -68,12 +68,7 @@
                   </a>
               </li>
               {% endif %}
-              <li class="nav-item">
-                  <a href="#" {% if request.path == '/myfavorites/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> В избранное </div>
-                  </a>
-              </li>
+
               <li class="nav-item">
                   <a href="{% url 'about' %}" {% if request.path == '/about/' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/about/' %} link-active {% endif %}"></i>
@@ -106,7 +101,9 @@
                 <div class="d-none d-lg-block "> {{ request.user.username }}</div>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                {% if request.user|has_group:"Authors" %}
                 <li><a class="dropdown-item" href="{% url 'new_article' %}">Создать сообщение</a></li>
+                {% endif %}
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
                 <li><a class="dropdown-divider"> </a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>

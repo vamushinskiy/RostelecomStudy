@@ -65,7 +65,6 @@ def profile(request):
 def profile_edit(request):
     user = request.user
     account = Account.objects.get(user=user)
-
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=user)
         account_form = AccountUpdateForm(request.POST, request.FILES, instance=account)
@@ -76,9 +75,11 @@ def profile_edit(request):
             messages.success(request, "Профиль изменён.")
             return redirect('profile')
     else:
-        context = {'account_form':AccountUpdateForm(instance=account),
-                       'user_form':UserUpdateForm(instance=user)}
-    return render(request, 'users/edit_profile.html', context)
+        context = {'account_form': AccountUpdateForm(instance=account),
+                   'user_form': UserUpdateForm(instance=user)}
+
+        return render(request, 'users/edit_profile.html', context)
+    return redirect('home')
 
 def password_edit(request):
     user = request.user
@@ -138,3 +139,9 @@ def my_news(request):
     context = {'articles': page_obj, 'categories':categories, 'total': total,
                'selected_category': selected_category,}
     return render(request,'users/my_news.html', context)
+
+@login_required
+def profile_delete(request):
+    user = request.user
+    user.delete()
+    return redirect('news_index')

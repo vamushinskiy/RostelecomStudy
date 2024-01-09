@@ -14,6 +14,7 @@ urlpatterns = [
         template_name='users/logout.html'), name='logout'),
     path('profile', views.profile, name='profile'),
     path('edit', views.profile_edit, name='edit'),
+    path('profile/delete', views.profile_delete, name='profile_delete'),
     path('password', views.password_edit, name='password'),
     path('favorites/<int:id>', views.add_to_favorites, name='favorites'),
     path('my_news', views.my_news, name='my_news')

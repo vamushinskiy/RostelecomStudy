@@ -11,7 +11,7 @@
 
 
 <aside>
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+    <a href="{% url 'profile' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
         <img  src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
         <span class="fs-5 d-none d-lg-block responsive-title"> Профиль</span>
     </a>
@@ -24,7 +24,7 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="#" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="'news_index'" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Все новости</div>
                   </a>
@@ -37,9 +37,9 @@
               </li>
 
               <li class="nav-item">
-                  <a href="#" {% if request.path == '/news/new_article' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/new_article/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Создание сообщения</div>
+                  <a href="#" {% if request.path == '/users/favorites/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/favorites/' %} link-active {% endif %}"></i>
+                        <div class="d-none d-lg-block"> Избранное</div>
                   </a>
               </li>
 
@@ -62,7 +62,7 @@
                 <div class="d-none d-lg-block "> {{ request.user.username }}</div>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Создать сообщение</a></li>
+                <li><a class="dropdown-item" href="{% url 'new_article' %}">Создать сообщение</a></li>
                 <li><a class="dropdown-item" href="{% url 'profile' %}}">Профиль</a></li>
                 <li><a class="dropdown-divider"> </a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>

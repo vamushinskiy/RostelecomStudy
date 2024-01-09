@@ -3,7 +3,7 @@
 {% load bootstrap5 %}
 {% load crispy_forms_tags %}
 
-{% block title %} Профиль пользователя {{ request.username }}{% endblock %}
+{% block title %} Профиль пользователя {{ request.user.username }}{% endblock %}
 
 {% block sidebar %} {% include 'users/user_profile.html' %} {% endblock %}
 {% block content %}
@@ -81,6 +81,8 @@
                     <div class="text-center">
                         <a class="btn btn-outline-primary" style="margin-bottom:15px;"
                            href="{% url 'edit' %}">Редактировать</a>
+                        <a class="btn btn-outline-danger" style="margin-bottom:15px;"
+                           href="{% url 'profile_delete' %}">Удалить аккаунт</a>
                     </div>
 
                 </div>

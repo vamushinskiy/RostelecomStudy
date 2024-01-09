@@ -38,7 +38,7 @@ def index(request):
         # применена обратная сортировка по дате.
         articles = Article.objects.all().order_by('-date')
     total = len(articles)
-    p = Paginator(articles, 5)
+    p = Paginator(articles, 3)
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
 

@@ -98,3 +98,8 @@ body .single_news{
   }
 }
 // подробнее про hover-эффекты: https://www.w3schools.com/cssref/sel_hover.php
+
+.contact-form{
+    float:left;
+    margin:10px 30%;
+}

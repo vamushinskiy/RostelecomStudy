@@ -18,10 +18,16 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="input-group">
+                    <select class="form-select" name="author_filter" style="width:40%">
+                        <option value="0">Все авторы</option>
+                        {% for author in author_list %}
+                            <option value="{{ author.id }}" {% if selec_author == author.id %} selected {% endif %}> {{ author.username }}</option>
+                        {% endfor %}
+                    </select>
                     <select class="form-select" name="category_filter" style="width:40%">
                         <option value="0">Все категории</option>
                         {% for cat in categories %}
-                            <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}> {{ cat.1 }}</option>
+                            <option value="{{ forloop.counter }}" {% if selec_category == forloop.counter %} selected {% endif %}> {{ cat.1 }}</option>
                         {% endfor %}
                     </select>
                     <span class="input-group-btn">
@@ -81,13 +87,7 @@
     </div>
     {% endfor %}
 </div>
-{% else %}
-<div class="content_center">
-    <div class="row">
-        <h1> У Вас пока нет сообщений. </h1>
-        <a class="ml-2" href="{% url 'new_article' %}"><h1>Хотите cоздать сообщение?</h1></a>
-    </div>
-</div>
+
 
 {% endif %}
 {% endblock %}

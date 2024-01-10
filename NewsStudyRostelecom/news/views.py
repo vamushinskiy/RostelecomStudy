@@ -17,35 +17,67 @@ def index(request):
     author_list = User.objects.all()
     # Получаем список категорий.
     categories = Article.categories
-    # получаем список тэгов
-    tag_list = Tag.objects.all().values('title')
-    selected_author = 0
-    selected_category = 0
-    selected_tag = 0
+    # # получаем список тэгов
+    # tag_list = Tag.objects.all().values('title')
+    # selected_author = 0
+    # selected_category = 0
+    # selected_tag = 0
     if request.method == "POST":
         selected_author = int(request.POST.get('author_filter'))
         selected_category = int(request.POST.get('category_filter'))
-        if selected_author == 0:
-            # применена обратная сортировка по дате.
-            articles = Article.objects.all().order_by('-date')
+    #     if selected_author == 0:
+    #         # применена обратная сортировка по дате.
+    #         articles = Article.objects.all().order_by('-date')
+    #
+    #     else:
+    #         # применена фильтрация по автору.
+    #         articles = Article.objects.filter(author=selected_author).order_by('-date')
+    #     if selected_category != 0:
+    #         articles = articles.filter(category__icontains=categories[selected_category-1][0]).order_by('-date')
+    # else:
+    #     # применена обратная сортировка по дате.
+    #     articles = Article.objects.all().order_by('-date')
+    #
 
+        request.session['author_filter'] = selected_author
+        request.session['category_filter'] = selected_category
+        if selected_author == 0: #выбраны все авторы
+            articles = Article.objects.all()
         else:
-            # применена фильтрация по автору.
-            articles = Article.objects.filter(author=selected_author).order_by('-date')
-        if selected_category != 0:
-            articles = articles.filter(category__icontains=categories[selected_category-1][0]).order_by('-date')
-    else:
-        # применена обратная сортировка по дате.
-        articles = Article.objects.all().order_by('-date')
+            articles = Article.objects.filter(author=selected_author)
+        if selected_category != 0: #фильтруем найденные по авторам результаты по категориям
+            articles = articles.filter(category__icontains=categories[selected_category-1][0])
+    else: #если страница открывется впервые или нас переадресовала сюда функция поиск
+        value = request.session.get('search_input') #вытаскиваем из сессии значение поиска
+        if value != None: #если не пустое - находим нужные ноновсти
+            articles = Article.objects.filter(title__icontains=value)
+            # del request.session['search_input'] #чистим сессию, чтобы этот фильтр не "заело"
+        else: #если это не поисковый запрос, а переход по пагинатору или первое открытие
+            selected_author = request.session.get('author_filter')
+            selected_category = request.session.get('category_filter')
+            articles = Article.objects.all()
+            if selected_author != None and int(selected_author) != 0:  # если не пустое - находим нужные ноновсти
+                articles = articles.filter(author=selected_author)
+            else:
+                selected_author = 0
+            if selected_category != None and int(selected_category) != 0:  # фильтруем найденные по авторам результаты по категориям
+                articles = articles.filter(category__icontains=categories[selected_category - 1][0])
+            else:
+                selected_category = 0
+
+    #сортировка от свежих к старым новостям
+    articles=articles.order_by('-date')
     total = len(articles)
-    p = Paginator(articles, 3)
+    p = Paginator(articles,3)
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
+    title = ('Заголовок страницы новости-индекс')
+    context = {'articles': page_obj, 'author_list':author_list, 'selected_author':selected_author,
+               'categories':categories,'selected_category': selected_category, 'total':total,
+               'title':title
+               }
 
-    context = {'articles': page_obj, 'author_list': author_list, 'selected_author': selected_author, 'categories':categories,
-               'selected_category': selected_category, 'total': total}
     return render(request,'news/index.html', context)
-
 
 
 # Используем декоратор проверки аутентификации.

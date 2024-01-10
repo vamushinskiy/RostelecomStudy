@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.db.models import Count
+from django.core.validators import MinLengthValidator
 
 
 
@@ -29,9 +30,10 @@ class Article(models.Model):
     # поля                                   # models.CASCADE или SET_DEFAULT
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
     title = models.CharField('Пункт', max_length=50, default='')
-    category = models.CharField(choices=categories, max_length=20, verbose_name='Категория сообщения')
+    category = models.CharField(choices=categories, max_length=25, verbose_name='Категория сообщения')
     anouncement = models.TextField('Анонс', max_length=250)
-    text = models.TextField('Текст сообщения')
+    text = models.TextField('Текст сообщения',
+                            validators=[MinLengthValidator(20, 'the field must contain at least 20 characters')])
     date = models.DateTimeField('Дата наблюдения', auto_created=True)
     tags = models.ManyToManyField(to=Tag, blank=True, verbose_name='Явления')
     slug = models.SlugField()

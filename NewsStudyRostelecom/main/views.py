@@ -13,17 +13,17 @@ def index(request):
     # for a in articles:
     #     print(a.title, a.tags.all())
     articles = Article.objects.prefetch_related('tags').all()
-    print(articles)
-    for a in articles:
-        print(a.title, a.tags.all())
+    # print(articles)
+    # for a in articles:
+    #     print(a.title, a.tags.all())
 
     tag_list = Tag.objects.all().values('title')
-    print(tag_list)
+    # print(tag_list)
     # for t in tag_list:
     #     print(t['title'])
 
     author_list = User.objects.all()
-    print(author_list)
+    # print(author_list)
 
     # Отображение последней новости.
     article = Article.objects.all().order_by('-date').first()
@@ -34,18 +34,6 @@ def index(request):
 def news(request):
     return render(request,'news/index.html')
 
-def get_demo(request, a, operation, b):
-    #match operation:
-        # case 'plus':
-        #     result = int(a) + int(b)
-        # case 'minus':
-        #     result = int(a) - int(b)
-        # case 'multiply':
-        #     result = int(a) * int(b)
-        # case 'devide':
-        #     result = int(a) / int(b)
-
-    return HttpResponse(f'Вы ввели: {a} и {b} <br> Результат {operation}: ')
 
 
 def about(request):

@@ -2,6 +2,8 @@
 {% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load users_extras %}
+
 <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 <script src="https://kit.fontawesome.com/a97047fead.js" crossorigin="anonymous"></script>
 <meta charset="utf-8">
@@ -24,21 +26,22 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <a href="'news_index'" {% if request.path == '/news/all_news' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="{% url 'news_index' %}" {% if request.path == '/news/news_index' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/news_index/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Все новости</div>
                   </a>
               </li>
+              {% if request.user|has_group:"Authors" %}
               <li class="nav-item">
                   <a href="{% url 'my_news' %}" {% if request.path == '/my_news' %} class="link-active" aria-current="page" {% endif %}>
                         <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/my_news/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Мои сообщения</div>
                   </a>
               </li>
-
+              {% endif %}
               <li class="nav-item">
-                  <a href="#" {% if request.path == '/users/favorites/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/favorites/' %} link-active {% endif %}"></i>
+                  <a href="{% url 'favorites_list' %}" {% if request.path == '/users/favorites_list/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/favorites_list/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Избранное</div>
                   </a>
               </li>
@@ -62,7 +65,7 @@
                 <div class="d-none d-lg-block "> {{ request.user.username }}</div>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="{% url 'new_article' %}">Создать сообщение</a></li>
+
                 <li><a class="dropdown-item" href="{% url 'profile' %}}">Профиль</a></li>
                 <li><a class="dropdown-divider"> </a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>

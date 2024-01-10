@@ -73,13 +73,17 @@ def profile_edit(request):
             user_form.save()
             account_form.save()
             messages.success(request, "Профиль изменён.")
-            return redirect('profile')
+            return redirect('home')
+        else:
+            pass
     else:
         context = {'account_form': AccountUpdateForm(instance=account),
                    'user_form': UserUpdateForm(instance=user)}
 
-        return render(request, 'users/edit_profile.html', context)
-    return redirect('home')
+    return render(request, 'users/edit_profile.html', context)
+
+
+
 
 def password_edit(request):
     user = request.user
@@ -113,6 +117,41 @@ def add_to_favorites(request, id):
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
+@login_required
+def favorites_list(request):
+    categories = Article.categories
+    author_list = User.objects.all()
+    favorite_articles = FavoriteArticle.objects.filter(user=request.user)
+    articles = [favorite_article.article for favorite_article in favorite_articles]
+    selec_author = 0
+    selec_category = 0
+    if request.method == "POST":
+        selec_author = int(request.POST.get('author_filter'))
+        selec_category = int(request.POST.get('category_filter'))
+        if selec_author == 0:
+            articles = Article.objects.filter().order_by('-date')
+        else:
+            # применена фильтрация по автору.
+            articles = Article.objects.filter(author=selec_author).order_by('-date')
+        if selec_category != 0:
+            articles = articles.filter(category__icontains=categories[selec_category - 1][0]).order_by('-date')
+    else:
+        # применена обратная сортировка по дате.
+        articles = Article.objects.all().order_by('-date')
+    total = len(articles)
+    p = Paginator(articles, 3)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj,
+               'author_list': author_list,
+                'selec_author':selec_author,
+               'categories': categories,
+               'selec_category': selec_category,
+               'total': total, }
+
+    return render(request, 'users/my_favorites.html',context)
+
+
 def my_news(request):
 
     # получаем автора
@@ -133,7 +172,7 @@ def my_news(request):
     else:
         selected_category = 0
     total = len(articles)
-    p = Paginator(articles, 5)
+    p = Paginator(articles, 3)
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
     context = {'articles': page_obj, 'categories':categories, 'total': total,
@@ -145,3 +184,25 @@ def profile_delete(request):
     user = request.user
     user.delete()
     return redirect('news_index')
+
+
+def my_favorites(request):
+    categories = Article.categories
+    author_list = User.objects.all()
+    favlist=FavoriteArticle.objects.filter(user=request.user.id)
+    articles = Article.objects.filter(favoritearticle__in=favlist)
+
+    total = len(articles)
+    p = Paginator(articles,3)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    selected_author = 0
+    selected_category = 0
+    context = {'articles': page_obj,
+               'author_list':author_list,
+               'selected_author':selected_author,
+               'categories':categories,
+               'selected_category': selected_category,
+               'total':total,}
+
+    return render(request,'users/my_favorites.html',context)

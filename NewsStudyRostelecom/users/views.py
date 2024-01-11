@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from news.models import Article
 from django.core.paginator import Paginator
+from .utils import check_group
 
 
 def index(request):
@@ -22,18 +23,16 @@ def index(request):
 def contact_page(request):
     if request.method =="POST":
         form = ContactForm(request.POST)
-
-
     else:
         form = ContactForm()
     context = {'form': form}
     return render(request, 'users/contact_page.html', context)
 
+
 # Функция регистрации нового пользователя.
 def registration(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-
         if form.is_valid():
             user = form.save()
             category = request.POST['account_type']
@@ -50,7 +49,7 @@ def registration(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, f'Пользователь {username} зарегистрирован!')
-            return redirect('profile')
+            return redirect('home')
     else:
         form = UserCreationForm()
     context = {'form': form}
@@ -62,20 +61,24 @@ def profile(request):
 
 
 # Функция редактирования профиля.
+@login_required
 def profile_edit(request):
     user = request.user
     account = Account.objects.get(user=user)
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=user)
         account_form = AccountUpdateForm(request.POST, request.FILES, instance=account)
-
+        context = {'account_form': AccountUpdateForm(instance=account),
+                   'user_form': UserUpdateForm(instance=user)}
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()
             messages.success(request, "Профиль изменён.")
-            return redirect('home')
+            return redirect('profile')
         else:
-            pass
+            error_dict = dict(account_form.errors)
+            error_dict.update(dict(user_form.errors))
+            messages.warning(request, error_dict)
     else:
         context = {'account_form': AccountUpdateForm(instance=account),
                    'user_form': UserUpdateForm(instance=user)}
@@ -166,11 +169,13 @@ def my_news(request):
 
     if request.method == "POST":
         selected_category = int(request.POST.get('category_filter'))
-
+        request.session['selected_category'] = selected_category
         if selected_category != 0:
             articles = articles.filter(category__icontains=categories[selected_category-1][0]).order_by('-date')
     else:
-        selected_category = 0
+        selected_category = request.session.get('selected_category')
+        if selected_category != None and selected_category != 0:  # если не пустое - находим нужные ноновсти
+            articles = articles.filter(category__icontains=categories[selected_category - 1][0])
     total = len(articles)
     p = Paginator(articles, 3)
     page_number = request.GET.get('page')
@@ -187,22 +192,34 @@ def profile_delete(request):
 
 
 def my_favorites(request):
-    categories = Article.categories
+    categories = Article.categories  # создали перечень категорий
     author_list = User.objects.all()
-    favlist=FavoriteArticle.objects.filter(user=request.user.id)
-    articles = Article.objects.filter(favoritearticle__in=favlist)
-
+    bookmarks_news = FavoriteArticle.objects.filter(user=request.user.id).values('article_id')
+    articles = Article.objects.filter(id__in=bookmarks_news)
+    if request.method == "POST":
+        selected_author = int(request.POST.get('author_filter'))
+        selected_category = int(request.POST.get('category_filter'))
+        request.session['selected_author'] = selected_author
+        request.session['selected_category'] = selected_category
+        if selected_author == 0:  # выбраны все авторы
+            articles = articles.all().order_by('-date')
+        else:
+            articles = articles.filter(author=selected_author)
+        if selected_category != 0:  # фильтруем найденные по авторам результаты по категориям
+            articles = articles.filter(category__icontains=categories[selected_category - 1][0])
+    else:  # если страница открывется
+        selected_author = request.session.get('selected_author')
+        print(selected_author)
+        if selected_author != None and selected_author != 0:  # если не пустое - находим нужные новости
+            articles = articles.filter(author=selected_author)
+        selected_category = request.session.get('selected_category')
+        print(selected_category)
+        if selected_category != None and selected_category != 0:  # если не пустое - находим нужные ноновсти
+            articles = articles.filter(category__icontains=categories[selected_category - 1][0])
     total = len(articles)
-    p = Paginator(articles,3)
+    p = Paginator(articles, 5)
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
-    selected_author = 0
-    selected_category = 0
-    context = {'articles': page_obj,
-               'author_list':author_list,
-               'selected_author':selected_author,
-               'categories':categories,
-               'selected_category': selected_category,
-               'total':total,}
-
+    context = {'articles': page_obj, 'total': total, 'selected_author': selected_author,
+               'categories': categories, 'selected_category': selected_category, 'author_list': author_list}
     return render(request,'users/my_favorites.html',context)

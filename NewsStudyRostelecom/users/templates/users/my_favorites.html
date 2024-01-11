@@ -12,54 +12,59 @@
     <div class="text-center" style="margin-top:30px;">
         <h1>Избранное</h1>
     </div>
-    <div class="content_center">
-        <h6> Фильтры: </h6>
-        <div class="form-group col-8">
+    <br>
+    <div class="text-center">
+        <label><h3> Фильтры: (Всего :{{ total }} результатов) </h3>
             <form method="post">
                 {% csrf_token %}
-                <div class="input-group">
-                    <select class="form-select" name="author_filter" style="width:40%">
+                <div class="form-group col-11">
+                    <select class="form-select" name="author_filter">
                         <option value="0">Все авторы</option>
                         {% for author in author_list %}
-                            <option value="{{ author.id }}" {% if selec_author == author.id %} selected {% endif %}> {{ author.username }}</option>
+                        <option value="{{ author.id }}" {% if selected_author == author.id %} selected {% endif %}>
+                            {{ author.username }}
+                        </option>
                         {% endfor %}
                     </select>
-                    <select class="form-select" name="category_filter" style="width:40%">
+                    <select class="form-select" name="category_filter">
                         <option value="0">Все категории</option>
-                        {% for cat in categories %}
-                            <option value="{{ forloop.counter }}" {% if selec_category == forloop.counter %} selected {% endif %}> {{ cat.1 }}</option>
+                        {% for c in categories %}
+                        <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}                               endif %}>
+                            {{ c.1 }}
+                        </option>
                         {% endfor %}
                     </select>
-                    <span class="input-group-btn">
-                        <input type="submit" class="btn btn-success" value="Выбрать" style="margin: 0 15px">
-                    </span>
+                    <br>
+                    <br>
+                    <input type="submit" class="btn btn-outline-success" value="Применить">
                 </div>
             </form>
-
-        </div>
-         <!--  пагинатор -->
-        {% if total > 5 %}
-            <div class="row">
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination">
-                      {% if articles.has_previous %}
-                        <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">Previous</a></li>
-                      {% endif %}
-                      {% for p in articles.paginator.page_range %}
-                        {% if articles.number == p %}
-                            <li class="page-item"><p class="page-link" style="color:black;"> {{ p }}</p></li>
-                        {% else %}
-                            <li class="page-item"><a class="page-link" href="?page={{ p }}"> {{ p }}</a></li>
-                        {% endif %}
-                      {% endfor %}
-                      {% if articles.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">Next</a></li>
-                      {% endif %}
-                  </ul>
-                </nav>
-            </div>
-        {% endif %}
+        </label>
     </div>
+    <br>
+    <!--  пагинатор -->
+    {% if total > 2 %}
+    <div class="row">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if news.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ news.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                {% for p in news.paginator.page_range %}
+                {% if news.number == p %}
+                <li class="page-item"><p class="page-link" style="color:black;"> {{ p }}</p></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ p }}"> {{ p }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if news.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ news.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
 
     {% for article in articles %}
     <div class="single_news">
@@ -71,7 +76,7 @@
                 <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-black fw-bold">Полное
                     сообщение...</a></p>
                 <p><small>Просмотры: {{ article.get_views }}</small></p>
-                <a class="btn btn-succes" href="{% url 'favorites' article.pk %}"><i class="fa fa-bookmark menu icon">В избранное</i></a>
+                <a class="btn btn-succes" href="{% url 'favorites' article.pk %}"><i class="fa fa-bookmark">В избранное</i></a>
             </div>
             {% if article.image_set.all %}
                 <div class="col-md-6 px-0">

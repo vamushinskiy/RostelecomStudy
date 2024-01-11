@@ -48,7 +48,7 @@ class Article(models.Model):
     def image_tag(self):
         image = Image.objects.filter(article=self)
         if image:
-            return mark_safe('<img src="{self.image.url}" height="50px" width="auto"/>')
+            return mark_safe('<img src="{image[0].image.url}" height="50px" width="auto"/>')
             # return mark_safe(f'<img src="{image[0].image.url}" height="50px" width="auto"/>')
         else:
             return '(no image)'
@@ -73,7 +73,7 @@ class Article(models.Model):
 class Image(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
-    image = models.ImageField(upload_to='article_images/%Y/%m/%d/')
+    image = models.ImageField(upload_to='article_images/%Y/%m/%d/',null=True,blank=True)
 
     def __str__(self):
         return self.title

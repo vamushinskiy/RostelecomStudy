@@ -40,20 +40,13 @@
               </li>
               {% endif %}
               <li class="nav-item">
-                  <a href="{% url 'favorites_list' %}" {% if request.path == '/users/favorites_list/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/favorites_list/' %} link-active {% endif %}"></i>
+                  <a href="{% url 'my_favorites' %}" {% if request.path == '/users/my_favorites/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa-solid fa-tv menu-icon {% if request.resolver_match.view_name  == '/my_favorites/' %} link-active {% endif %}"></i>
                         <div class="d-none d-lg-block"> Избранное</div>
                   </a>
               </li>
 
-              <li class="nav-item">
-                  <a href="{% url 'logout' %}" {% if request.path == 'logout/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa-sharp fa-regular fa-comment menu-icon {% if request.resolver_match.view_name  == '/logout/' %} link-active {% endif %}"></i>
-                        <div class="d-none d-lg-block"> Выход </div>
-                  </a>
-              </li>
-
-       </ul>
+        </ul>
     </hr>
     <br>
     {% if request.user.id %}
@@ -66,7 +59,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 
-                <li><a class="dropdown-item" href="{% url 'profile' %}}">Профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
                 <li><a class="dropdown-divider"> </a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
             </ul>

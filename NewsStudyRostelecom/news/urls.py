@@ -9,6 +9,7 @@ urlpatterns = [
     path('update/<int:pk>', views.ArticleUpdateView.as_view(), name='news_update'),
     path('delete/<int:pk>', views.ArticleDeleteView.as_view(), name='delete_article'),
     path('new_article', views.new_article, name='new_article'),
-    path('search/', views.search, name='search'),
+    path('search_news', views.search_news, name='search'),
+    path('search_auto/', views.search_auto, name='search_auto'),
     # path('pagination', views.pagination, name='pagination')
 ]

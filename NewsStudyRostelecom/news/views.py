@@ -140,7 +140,7 @@ class ArticleDeleteView(DeleteView):
 
 
 # функция поиска
-def search(request):
+def search_auto(request):
     # Если так не сработает, то делаем как ниже
     #if request.is_ajax():
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -155,6 +155,12 @@ def search(request):
     mimetypes = 'aplication/json'
     return HttpResponse(data, mimetypes)
 
-
+def search_news(request):
+    articles = {}
+    if request.method == 'POST':
+        print(request.POST)
+        articles = Article.objects.filter(title=request.POST.get('search_input')).order_by('date')
+    context = {'articles': articles}
+    return render(request, 'news/search_news.html', context)
 
 

@@ -30,7 +30,7 @@ class UserUpdateForm(UserChangeForm):
 class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ['post', 'phone', 'address', 'telegram', 'account_image']
+        fields = ['phone', 'address', 'telegram', 'account_image']
         widgets = {'phone': NumberInput({'class': 'textinput form-control',
                                        'placeholder': 'phone number'}),
                    'address': TextInput({'class': 'textinput form-control',

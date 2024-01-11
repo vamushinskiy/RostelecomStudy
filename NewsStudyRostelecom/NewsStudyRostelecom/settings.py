@@ -24,13 +24,13 @@ SECRET_KEY = 'django-insecure--t9pua%(3!5@#=8lb3rdygj@rixv1fhro4-ut)204m(f70h@0#
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Для проверки своей страницы 404, конфигурация такая:
-#DEBUG = False
-#ALLOWED_HOSTS = ["*"]
+DEBUG = False
+ALLOWED_HOSTS = ["*"]
 
 # Для режима отладки такая:
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# DEBUG = True
+#
+# ALLOWED_HOSTS = []
 
 
 # Application definition
